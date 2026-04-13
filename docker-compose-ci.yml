@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  backend-ci:
+    image: node:18-alpine
+    container_name: bazaarhub_backend_ci
+    working_dir: /app
+    volumes:
+      - ./Backend:/app
+    command: sh -c "npm install && node server.js"
+    ports:
+      - "5001:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo-ci:27017/bazaarhubdb
+      - JWT_SECRET=YOUR_VERY_STRONG_JWT_SECRET_KEY
+      - PORT=5000
+    depends_on:
+      - mongo-ci
+
+  mongo-ci:
+    image: mongo:6
+    container_name: bazaarhub_mongo_ci
+    volumes:
+      - mongo_ci_data:/data/db
+    ports:
+      - "27018:27017"
+
+volumes:
+  mongo_ci_data:
