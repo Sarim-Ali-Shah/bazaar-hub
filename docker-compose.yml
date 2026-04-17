@@ -4,13 +4,21 @@ services:
     build: ./Backend
     container_name: bazaarhub_backend
     ports:
-      - "3000:5000"
+      - "80:5000"
     environment:
       - MONGO_URI=mongodb://mongo:27017/bazaarhubdb
       - JWT_SECRET=YOUR_VERY_STRONG_JWT_SECRET_KEY
       - PORT=5000
     depends_on:
       - mongo
+
+  frontend:
+    build: ./OMP
+    container_name: bazaarhub_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
 
   mongo:
     image: mongo:6
